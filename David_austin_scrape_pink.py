@@ -2,12 +2,9 @@ from bs4 import BeautifulSoup
 import requests
 import csv
 
-# Creates csv
+# Creating csv
 
-
-filename = "David_austin_roses_pink_2.csv"
-# csv_writer = csv.writer(filename)
-# csv_writer.writerow(['Rose_name', 'Category', 'Url', 'Price', 'Colour'])
+filename = "David_austin_roses_pink.csv"
 
 
 with open(filename,'w',newline='',encoding='utf-8') as f:
@@ -16,13 +13,15 @@ with open(filename,'w',newline='',encoding='utf-8') as f:
     bytes_headers = bytes(headers, 'utf-8')
     w.writerow(headers.split())
 
+# Getting website
 
     source = requests.get('https://www.davidaustinroses.co.uk/colour/pink-show-all').text
 
+# Parsing in BeautifulSoup
+
     soup = BeautifulSoup(source, 'lxml', fromEncoding='utf-8')
 
-    # used to get only first rose mentioned on the page
-    # rose = soup.find("li", {"class":"item last"})
+# Looping through Roses
 
     for rose in soup.find_all("li", {"class":"item last"}):
 
@@ -30,7 +29,7 @@ with open(filename,'w',newline='',encoding='utf-8') as f:
 
         rose_item = rose.find("div", {"class":"product-info"}).a
 
-        # print(rose_item)
+        # Getting data for each rose
         try:
             name = rose_item.get('title')
         except Exception as e:
@@ -49,10 +48,13 @@ with open(filename,'w',newline='',encoding='utf-8') as f:
             price = 'None'
         color = 'pink'
 
+        # Printing each rose data in Terminal
         print(name)
         print(url)
         print(category)
         print(price)
         print(color)
 
+        # Printing data to csv file
+        # Had to change encoding of name as it was not in utf-8
         w.writerow([(name.encode('ascii','ignore')).decode('utf-8'),url,category,price,color])
