@@ -57,4 +57,4 @@ with open(filename,'w',newline='',encoding='utf-8') as f:
 
         # Printing data to csv file
         # Had to change encoding of name as it was not in utf-8
-        w.writerow([(name.encode('ascii','ignore')).decode('utf-8'),url,category,price,color])
+        w.writerow([(name.encode('ascii','ignore')).decode('utf-8'),url,category,(price.encode('ascii','ignore')).decode('utf-8'),color])
