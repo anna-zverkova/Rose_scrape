@@ -37,14 +37,14 @@ except Exception as e:
 color = 'white'
 
 
-# Printing each rose data in Terminal
+# Printing rose data in Terminal
 print(name)
 print(url)
 print(category)
 print(price)
 print(color)
 
-# scraping from accosiated pages
+# Scraping from associated page
 
 linked_page = url
 
@@ -60,9 +60,9 @@ rose2 = page2_soup.find("li", {"class":"characteristics"})
 
 print(rose2.prettify())
 
-# getting extra data from scraped url
+# Getting extra data from scraped url and adding it to dictionary
 
-
+results = {}
 for item in rose2.find_all(class_='characteristics-wrapper')[0].find_all("li"):
     try:
         characteristic = item.h4.text
@@ -72,4 +72,6 @@ for item in rose2.find_all(class_='characteristics-wrapper')[0].find_all("li"):
         type = item.p.text
     except Exception as e:
         type = 'None'
+    results[characteristic] = type
     print('Characteristic : {}'.format(characteristic), 'Type : {}'.format(type))
+    print(results)
