@@ -1,3 +1,4 @@
+import urllib.request
 from bs4 import BeautifulSoup
 import requests
 import csv
@@ -42,3 +43,33 @@ print(url)
 print(category)
 print(price)
 print(color)
+
+# scraping from accosiated pages
+
+linked_page = url
+
+class AppURLopener(urllib.request.FancyURLopener):
+  version = "Mozilla/5.0"
+
+opener = AppURLopener()
+response2 = opener.open(linked_page)
+
+page2_soup = BeautifulSoup(response2, 'lxml')
+
+rose2 = page2_soup.find("li", {"class":"characteristics"})
+
+print(rose2.prettify())
+
+# getting extra data from scraped url
+
+
+for item in rose2.find_all(class_='characteristics-wrapper')[0].find_all("li"):
+    try:
+        characteristic = item.h4.text
+    except Exception as e:
+        characteristic = 'None'
+    try:
+        type = item.p.text
+    except Exception as e:
+        type = 'None'
+    print('Characteristic : {}'.format(characteristic), 'Type : {}'.format(type))
